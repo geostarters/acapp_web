@@ -1,6 +1,9 @@
 class Constants {
     static fontsOficialsURL = 'http://test.icgc.cat/fontsacapi/fonts/oficials';
     static fontsUsuariURL = 'http://test.icgc.cat/fontsacapi/fonts/users';
+    static ranquingsURL = 'http://test.icgc.cat/fontsacapi/fonts/ranquing';
+    static userUpdatedFontsURL = 'http://test.icgc.cat/fontsacapi/fonts/userupdated';
+
     static tilesURL = 'http://betaserver.icgc.cat/tileserver3/tileserver.php/mtc25mcomplet/{z}/{x}/{y}.pbf';
     static mapbox_style = {
         "version": 8,

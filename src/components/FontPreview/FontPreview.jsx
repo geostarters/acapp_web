@@ -7,9 +7,9 @@ import CardText from "react-md/lib/Cards/CardText";
 import FontIcon from "react-md/lib/FontIcons";
 import Link from "gatsby-link";
 import Media, { MediaOverlay } from "react-md/lib/Media";
-import "./PostPreview.scss";
+import "./FontPreview.scss";
 
-class PostPreview extends Component {
+class FontPreview extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,17 +34,17 @@ class PostPreview extends Component {
     }
   }
   render() {
-    const { postInfo } = this.props;
+    const {fontInfo } = this.props;
     const { mobile } = this.state;
     const expand = mobile;
     /* eslint no-undef: "off"*/
-    const cover = postInfo.cover.startsWith("/")
-      ? __PATH_PREFIX__ + postInfo.cover
-      : postInfo.cover;
+    const cover = fontInfo.pathImatgeOficial.startsWith("/")
+      ? __PATH_PREFIX__ + fontInfo.pathImatgeOficial
+      : fontInfo.pathImatgeOficial;
     const coverHeight = mobile ? 162 : 225;
     return (
-      <Card key={postInfo.path} raise className="md-grid md-cell md-cell--12">
-        <Link style={{ textDecoration: "none" }} to={postInfo.path}>
+      <Card key={fontInfo.id} raise className="md-grid md-cell md-cell--12">
+        <Link style={{ textDecoration: "none" }} to={fontInfo.id}>
           <Media
             style={{
               backgroundImage: `url(${cover})`,
@@ -53,7 +53,7 @@ class PostPreview extends Component {
             className="post-preview-cover"
           >
             <MediaOverlay>
-              <CardTitle title={postInfo.title}>
+              <CardTitle title={fontInfo.title}>
                 <Button raised secondary className="md-cell--right">
                   Read
                 </Button>
@@ -64,16 +64,16 @@ class PostPreview extends Component {
         <CardTitle
           expander={expand}
           avatar={<Avatar icon={<FontIcon iconClassName="fa fa-calendar" />} />}
-          title={`Published on ${postInfo.date}`}
-          subtitle={`${postInfo.timeToRead} min read`}
+          title={`${fontInfo.municipi}`}
+          subtitle={`${fontInfo.conca}`}
         />
 
         <CardText expandable={expand}>
-          {postInfo.excerpt}
+          Expand
         </CardText>
       </Card>
     );
   }
 }
 
-export default PostPreview;
+export default FontPreview;

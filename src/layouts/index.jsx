@@ -7,37 +7,69 @@ import "./global.scss";
 import { Toolbar } from "react-md";
 import UserLinks from "../components/UserLinks/UserLinks";
 import Map from "../components/Map/Map";
+import Ranquings from "../components/Ranquings/Ranquings";
+import BackOffice from "../components/BackOffice/BackOffice";
 
 export default class MainLayout extends React.Component {
-  getLocalTitle() {
-    function capitalize(string) {
-      return string.charAt(0).toUpperCase() + string.slice(1);
-    }
+  getCurrentPath() {
+
     const pathPrefix = config.pathPrefix ? config.pathPrefix : "/";
     const currentPath = this.props.location.pathname
       .replace(pathPrefix, "")
       .replace("/", "");
+
+    return currentPath;
+
+  }
+
+  getLocalTitle() {
+    const currentPath = this.getCurrentPath();
     let title = "";
+
     if (currentPath === "") {
       title = "Home";
-    } else if (currentPath === "login") {
+    } else if (currentPath === "login/") {
       title = "Login";
-    } else if (currentPath === "fonts") {
-      title = "Fonts";
+    } else if (currentPath === "ranquings/") {
+      title = "Rànquings";
+    } else if (currentPath === "admin/") {
+      title = "Administració";
     }
     return title;
   }
-  render() {
-    const linkConfig ={
+
+  getLink() {
+    const currentPath = this.getCurrentPath();
+
+    const rankingLinkConfig ={
       userLinks: [
         {
-          url: "/about",
+          url: "/ranquings/",
           label: "Rànquings",
           iconClassName: ""
         }
       ]
     };
 
+    const mapLinkConfig ={
+      userLinks: [
+        {
+          url: "/",
+          label: "Mapa",
+          iconClassName: ""
+        }
+      ]
+    };
+
+    if (currentPath === "") {
+      return <UserLinks config={rankingLinkConfig} labeled="1" />;
+    } else {
+      return <UserLinks config={mapLinkConfig} labeled="1" />;
+    }
+
+  }
+
+  render() {
     return (
       <div>
         <Toolbar
@@ -45,13 +77,29 @@ export default class MainLayout extends React.Component {
           fixed
           colored
           title={this.getLocalTitle()}
-          actions={<UserLinks config={linkConfig} labeled="1" />}
+          actions={this.getLink()}
         />
         <Helmet>
           <meta name="description" content={config.siteDescription} />
         </Helmet>
-        <Map />
+        {this.renderContent()}
       </div>
     );
+  }
+
+  renderContent() {
+
+    const currentPath = this.getCurrentPath();
+
+    if (currentPath === "") {
+      return <Map />;
+    } else if (currentPath === "ranquings/") {
+      return <Ranquings />;
+    } else if (currentPath === "login/") {
+      return <Login />
+    } else if (currentPath === "admin/") {
+      return <BackOffice />
+    }
+
   }
 }
