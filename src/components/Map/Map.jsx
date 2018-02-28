@@ -26,8 +26,8 @@ class Map extends Component {
 
     async createMapOnline() {
 
-        let mapStyle = Constants.mapbox_style;
-        mapStyle.sources.mtc25mgdb.tiles[0] = Constants.tilesURL;
+        let mapStyle = Constants.themes;
+        mapStyle.sources.mtc25mgdb.tiles[0] = Constants.URL_MAPONLINE;
         mapStyle.sources.mtc25mgdb.maxzoom = 15;
         mapStyle.sources.mtc25mgdb.type = "vector";
 
@@ -35,7 +35,7 @@ class Map extends Component {
             style: mapStyle,
             container: 'map',
             center: [2.03796,41.53737],
-            zoom: 11,
+            zoom: 7,
             maxZoom: 14.99,
             hash : true
         });
