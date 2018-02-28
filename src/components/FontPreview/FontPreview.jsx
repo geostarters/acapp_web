@@ -46,7 +46,7 @@ class FontPreview extends Component {
 
     const coverHeight = mobile ? 240 : 320;
     const username = `Usuari: ${fontInfo.username}`;
-    
+
     return(
       <Media
       style={{
@@ -63,9 +63,9 @@ class FontPreview extends Component {
     );
   }
 
-  getCabalValue(cabal){
+  getCabalValue(cabal, cabalAltres){
     if(cabal  === 'N') return 'No raja';
-    if(cabal === 'ALTRES') return this.font.cabalAltres;
+    if(cabal === 'ALTRES') return cabalAltres;
     if(cabal === '') return '-';
     return '-';
   }
@@ -94,7 +94,7 @@ class FontPreview extends Component {
         
 
         <ListItem primaryText="Cabal" leftAvatar={<Avatar icon={<FontIcon iconClassName="fa fa-tint" />} />} >
-        {this.getUsValue(fontInfo.cabal)}
+        {this.getUsValue(fontInfo.cabal, fontInfo.cabalAltres)}
         </ListItem>
         <ListItem primaryText="Observacions" leftAvatar={<Avatar icon={<FontIcon iconClassName="fa fa-eye" />} />} >
         {fontInfo.observacions}

@@ -13,10 +13,12 @@ class BackOffice extends Component {
 
     constructor(props) {
 
-    	super(props)
+    	super(props);
         this.state = {
             fontsUsuaris: null,
-            fotosUsuaris: null
+            fotosUsuaris: null,
+            showDialogUpdate: false,
+            showDialogDownload: false
         };
     }
 
@@ -77,17 +79,85 @@ class BackOffice extends Component {
         );
     }
 
+    downloadFonts(){
+
+        fetch(Constants.fontsUsuariURL).then(
+            async (response) => {
+                //console.log(response.json());
+                this.setState({fontsUsuaris: await response.json()});     
+            }
+        );
+
+    }
+
+    updateFonts(){
+
+        fetch(Constants.updateFonstOficialsURL).then(
+            async (response) => {
+                
+                console.log(response.json());
+
+                this.setState({showDialogUpdate: true});     
+            }
+        );
+
+    }
+
+    downloadFonts(){
+
+        fetch(Constants.downloadFontsURL).then(
+            async (response) => {
+                
+                console.log(response.json());
+
+                this.setState({showDialogDownload: true});     
+            }
+        );
+
+    }
+
+    hide = () => {
+        this.setState({ showDialogUpdate: false });
+        this.setState({ showDialogDownload: false });
+      };
+
+    renderDialogUpdate(){
+        return(
+        <DialogContainer
+          id="simple-list-dialog"
+          visible={this.state.showDialogUpdate}
+          title="Actualització"
+          onHide={this.hide}
+        >
+            <p>Fonts Oficials actualitzades</p>
+        </DialogContainer>
+        );
+    }
+
+    renderDialogDownload(){
+        return(
+        <DialogContainer
+          id="simple-list-dialog"
+          visible={this.state.showDialogUpdate}
+          title="Exportació"
+          onHide={this.hide}
+        >
+            <p>Fonts d'usuaris exportades</p>
+        </DialogContainer>
+        );
+    }
+
     renderButtons(){
 
         return(
             <div className="container-buttons">
                 
  
-                    <Button className="my-button" raised primary iconClassName="fa fa-download">Descarregar fonts</Button>
+                    <Button onClick={this.downloadFonts()} className="my-button" raised primary iconClassName="fa fa-download">Descarregar fonts</Button>
 
 
               
-                    <Button className="my-button" raised primary iconClassName="fa fa-cloud-upload">Actualitzar fonts</Button>
+                    <Button onClick={this.updateFonts()} className="my-button" raised primary iconClassName="fa fa-cloud-upload">Actualitzar fonts</Button>
               
             </div>
         );
@@ -122,6 +192,8 @@ class BackOffice extends Component {
                         {this.renderTabContainer()}
                         
                       </div>
+                      {this.renderDialogUpdate()}
+                      {this.renderDialogDownload()}
                 </div>
 
             );

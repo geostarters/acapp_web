@@ -1,21 +1,32 @@
 import React, { Component } from "react";
-import { DialogContainer, List, ListItem } from "react-md";
+import { DialogContainer, List, ListItem, Media } from "react-md";
 import Constants from '../../constants.jsx';
 import mapboxgl from '../../vendor/mapbox-gl-dev.js';
 
 import "./Map.scss";
+import logo from '../../images/logo.svg';
 
 class Map extends Component {
-    state = { 
-        visible: false, 
-        properties: {
-            toponim_PA: "",
-            us: "",
-            cabal: "",
-            cabalAltres: "",
-            observacions: ""
-        } 
-    };
+
+    constructor(props){
+
+        super(props);
+
+        this.state = { 
+            visible: false, 
+            properties: {
+                toponim_PA: "",
+                us: "",
+                cabal: "",
+                cabalAltres: "",
+                observacions: "",
+                fotografies: [],
+                username: ''
+            } 
+        };
+    }
+
+
 
     async componentDidMount() {
         
@@ -26,10 +37,9 @@ class Map extends Component {
 
     async createMapOnline() {
 
+        mapboxgl.accessToken = Constants.MAPBOX_GL_TOKEN;
+
         let mapStyle = Constants.themes;
-        mapStyle.sources.mtc25mgdb.tiles[0] = Constants.URL_MAPONLINE;
-        mapStyle.sources.mtc25mgdb.maxzoom = 15;
-        mapStyle.sources.mtc25mgdb.type = "vector";
 
         return new mapboxgl.Map({
             style: mapStyle,
@@ -53,12 +63,13 @@ class Map extends Component {
                     "paint": {
                         "circle-stroke-color": "#ffffff",        
                         "circle-stroke-width": 2,        
-                        "circle-radius": 10,
+                        "circle-radius": 7,
                         "circle-color": "#00BCD4"
                     }
                 });
             }
         );
+
         const fontsUsuaris = fetch(Constants.fontsUsuariURL).then(
             async (response) => {
                 this.map.addLayer({
@@ -68,7 +79,7 @@ class Map extends Component {
                     "paint": {
                         "circle-stroke-color": "#ffffff",
                         "circle-stroke-width": 2,
-                        "circle-radius": 10,
+                        "circle-radius": 9,
                         "circle-color": "#FFAE00"
                     }
                 });       
@@ -109,6 +120,57 @@ class Map extends Component {
 
     }
 
+
+    getCabalValue(cabal, cabalAltres){
+        if(cabal  === 'N') return 'No raja';
+        if(cabal === 'ALTRES') return cabalAltres;
+        if(cabal === '') return '-';
+        return '-';
+      }
+    
+      getUsValue(us){
+        if(us  === 'N') return 'No';
+        if(us === 'S') return 'Sí';
+        if(us === 'SN') return 'No ho sé';
+        if(us === '') return '-';
+        return '-';
+    
+      }
+
+    renderInfoFont(properties){
+
+        let url = logo;
+/*         if(properties.fotografies){
+            const fotografies = JSON.parse(properties.fotografies);
+            url = (fotografies.length>0 && !properties.username ?  fotografies[0].URLFoto : __PATH_PREFIX__ + logo );
+        } */
+
+
+        return(
+            <List>
+                <ListItem>
+                    <Media>
+                    <img src={url} alt="Something" />
+                    </Media>
+                </ListItem>
+                <ListItem 
+                    primaryText="Topònim"
+                    secondaryText={properties.toponim_PA} />
+                <ListItem 
+                    primaryText="Ús"
+                    secondaryText={this.getUsValue(properties.us)} />
+                <ListItem 
+                    primaryText="Cabal"
+                    secondaryText={this.getCabalValue(properties.cabal, properties.cabalAltres)} />
+
+                <ListItem 
+                    primaryText="Observacions"
+                    secondaryText={properties.observacions} />
+            </List>
+        );
+
+    }
+
     render() {
         const {visible, properties} = this.state;
         return (
@@ -116,27 +178,11 @@ class Map extends Component {
                 <DialogContainer
                     id = "popup-dialog"
                     visible = {visible}
-                    title = "Propietats de la font"
+                    title = "Dades de la font"
                     onHide = {this.hide.bind(this)}
                 >
-                    <List>
-                        <ListItem 
-                            primaryText="Topònim"
-                            secondaryText={properties.toponim_PA} />
-                        <ListItem 
-                            primaryText="Ús"
-                            secondaryText={properties.us} />
-                        <ListItem 
-                            primaryText="Cabal"
-                            secondaryText={properties.cabal} />
-                        <ListItem 
-                            visible={properties.cabalAltres !== ""}
-                            primaryText="Cabal Altres"
-                            secondaryText={properties.cabalAltres} />
-                        <ListItem 
-                            primaryText="Observacions"
-                            secondaryText={properties.observacions} />
-                    </List>
+                {this.renderInfoFont(properties)}
+
                 </DialogContainer>
                 <div id="map"
                     className="fullscreen-map"

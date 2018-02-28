@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-
+import { ListItem } from 'react-md';
 import "./Rank.scss";
 
 class Rank extends Component {
-  render() {
+  render2() {
     const { info } = this.props;
 
     const username = info.username;
@@ -22,7 +22,31 @@ class Rank extends Component {
                 {`${number} fonts afegides`}
             </div>
         </div>
+
     );
+  }
+
+
+  render(){
+
+    const { info } = this.props;
+
+    const username = info.username;
+    const position = info.position;
+    const number = info.number;
+    const src = `/svg/rank${position+1}.svg`;
+
+    return(
+        <ListItem 
+        primaryText={username} 
+        secondaryText={`${number} fonts afegides`} 
+        leftAvatar={<Avatar icon={<SVGIcon use={src} />} suffix="light-green" />}
+        >
+        
+        </ListItem>
+    );
+
+
   }
 
   renderIcon(position) {

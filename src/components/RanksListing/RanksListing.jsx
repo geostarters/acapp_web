@@ -1,9 +1,11 @@
 import React from "react";
 import Rank from "../Rank/Rank";
+import {  List, Subheader } from 'react-md';
 
-import "./RanksListing.scss"
+import "./RanksListing.scss";
 
 class RanksListing extends React.Component {
+
   getRanksList() {
     const ranksList = [];
     this.props.ranks
@@ -17,15 +19,30 @@ class RanksListing extends React.Component {
     });
     return ranksList;
   }
+
   render() {
+    
     const ranksList = this.getRanksList();
+
     return (
-      <div className="md-grid md-grid--no-spacing md-cell--middle afterToolbar">
+
+
+      <List className="dividers__example">
+              
+      <Subheader primaryText="Rànquings d'usaris:" />
+
+
         {ranksList.map(rank => (
             <Rank info={rank} />
         ))}
-      </div>
+
+
+
+      </List>
+
+
     );
+
   }
 }
 
